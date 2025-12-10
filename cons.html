@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Consultation - EcoHealth Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        :root {
+            --primary-color: #2E7D32;
+            --secondary-color: #4CAF50;
+            --accent-color: #81C784;
+            --text-color: #1B5E20;
+            --background-color: #E8F5E9;
+        }
+
+        body {
+            background-color: var(--background-color);
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 3px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .login-btn, .signup-btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+
+        .signup-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 7rem auto 2rem;
+            padding: 0 5%;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-btn {
+            padding: 1rem 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .features {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .features h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border: 2px solid var(--accent-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            position: relative;
+            border: 2px solid var(--accent-color);
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+        form input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 2.8rem;
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background-color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.form-group i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--secondary-color);
+    z-index: 3;
+}
+        form input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 2.8rem;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        form input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        form button {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        form button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-content {
+                padding: 2rem 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+        /* Add consultation-specific styles */
+        .consultation-container {
+            max-width: 1200px;
+            margin: 7rem auto 2rem;
+            padding: 0 5%;
+        }
+
+        .consultation-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .consultation-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .doctor-list {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .doctor-card {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .doctor-card.selected {
+            border-color: var(--primary-color);
+            background-color: var(--background-color);
+        }
+
+        .doctor-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 1.5rem;
+            object-fit: cover;
+        }
+
+        .doctor-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .doctor-info p {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .time-slot {
+            padding: 0.5rem;
+            text-align: center;
+            border: 2px solid var(--accent-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .time-slot:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .time-slot.selected {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .book-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .consultation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>EcoHealth Connect</h1>
+            </div>
+            <ul class="nav-links">
+              <li><a href="home.html">Home</a></li>
+              <li><a href="service.html">Services</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="cons.html">Consultation</a></li>
+              
+            </ul>
+        </nav>
+    </header>
+
+    <div class="consultation-container">
+        <div class="consultation-header">
+            <h1>Book Your Eco-Friendly Consultation</h1>
+            <p>Choose your preferred healthcare provider and schedule a virtual consultation</p>
+        </div>
+
+        <div class="consultation-grid">
+            <div class="doctor-list">
+                <h2>Available Healthcare Providers</h2>
+                <div class="doctor-card" onclick="selectDoctor(1)">
+                    
+                    <div class="doctor-info">
+                        <h3>Dr. Sarah Green</h3>
+                        <p>General Medicine | 10 years experience</p>
+                        <p><i class="fas fa-star" style="color: gold;"></i> 4.9 (120 reviews)</p>
+                    </div>
+                </div>
+
+                <div class="doctor-card" onclick="selectDoctor(2)">
+                    
+                    <div class="doctor-info">
+                        <h3>Dr. Michael Chen</h3>
+                        <p>Family Medicine | 8 years experience</p>
+                        <p><i class="fas fa-star" style="color: gold;"></i> 4.8 (95 reviews)</p>
+                    </div>
+                </div>
+
+                <div class="doctor-card" onclick="selectDoctor(6)">
+                  
+                  <div class="doctor-info">
+                      <h3>Dr. James Anderson</h3>
+                      <p>Environmental Medicine | 11 years experience</p>
+                      <p><i class="fas fa-tree" style="color: var(--primary-color);"></i> Climate Health Specialist</p>
+                      <p><i class="fas fa-star" style="color: gold;"></i> 4.9 (142 reviews)</p>
+                  </div>
+              </div>
+                <div class="doctor-card" onclick="selectDoctor(5)">
+                  
+                  <div class="doctor-info">
+                      <h3>Dr. Sofia Rodriguez</h3>
+                      <p>Environmental Health Specialist | 9 years experience</p>
+                      <p><i class="fas fa-leaf" style="color: var(--primary-color);"></i> Environmental Health Expert</p>
+                      <p><i class="fas fa-star" style="color: gold;"></i> 4.8 (135 reviews)</p>
+                  </div>
+              </div>
+            </div>
+
+            <div class="booking-form">
+                <h2>Schedule Appointment</h2>
+                <form id="consultationForm" onsubmit="bookAppointment(event)">
+                    <div class="form-group">
+                        <label>Appointment Date</label>
+                        <input type="date" required min="<?php echo date('Y-m-d'); ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Available Time Slots</label>
+                        <div class="time-slots">
+                            <div class="time-slot" onclick="selectTimeSlot(this)">09:00 AM</div>
+                            <div class="time-slot" onclick="selectTimeSlot(this)">10:00 AM</div>
+                            <div class="time-slot" onclick="selectTimeSlot(this)">11:00 AM</div>
+                            <div class="time-slot" onclick="selectTimeSlot(this)">02:00 PM</div>
+                            <div class="time-slot" onclick="selectTimeSlot(this)">03:00 PM</div>
+                            <div class="time-slot" onclick="selectTimeSlot(this)">04:00 PM</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Consultation Type</label>
+                        <select required>
+                            <option value="">Select consultation type</option>
+                            <option value="general">General Consultation</option>
+                            <option value="followup">Follow-up Visit</option>
+                            <option value="specialist">Specialist Consultation</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Reason for Visit</label>
+                        <textarea required placeholder="Please describe your symptoms or reason for consultation"></textarea>
+                    </div>
+
+                    <button type="submit" class="book-btn">Book Consultation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectDoctor(id) {
+            document.querySelectorAll('.doctor-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+        }
+
+        function selectTimeSlot(slot) {
+            document.querySelectorAll('.time-slot').forEach(s => {
+                s.classList.remove('selected');
+            });
+            slot.classList.add('selected');
+        }
+
+        function bookAppointment(event) {
+            event.preventDefault();
+            // Add your booking logic here
+            alert('Appointment booked successfully! You will receive a confirmation email shortly.');
+        }
+    </script>
+</body>
+</html>

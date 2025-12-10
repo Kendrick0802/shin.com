@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - EcoHealth Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        :root {
+            --primary-color: #2E7D32;
+            --secondary-color: #4CAF50;
+            --accent-color: #81C784;
+            --text-color: #1B5E20;
+            --background-color: #E8F5E9;
+        }
+
+        body {
+            background-color: var(--background-color);
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 3px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .login-btn, .signup-btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+
+        .signup-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 7rem auto 2rem;
+            padding: 0 5%;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-btn {
+            padding: 1rem 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .features {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .features h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border: 2px solid var(--accent-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            position: relative;
+            border: 2px solid var(--accent-color);
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+        form input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 2.8rem;
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background-color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.form-group i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--secondary-color);
+    z-index: 3;
+}
+        form input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 2.8rem;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        form input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        form button {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        form button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-content {
+                padding: 2rem 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+        .about-hero {
+            background-color: white;
+            padding: 4rem 5%;
+            margin-top: 5rem;
+            text-align: center;
+        }
+
+        .mission-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem 5%;
+            text-align: center;
+        }
+
+        .team-section {
+            background-color: white;
+            padding: 4rem 5%;
+            margin: 2rem 0;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 2rem;
+            background: var(--background-color);
+            border-radius: 15px;
+            border: 2px solid var(--accent-color);
+        }
+
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary-color);
+        }
+
+        .stats-section {
+            background: var(--primary-color);
+            color: white;
+            padding: 4rem 5%;
+            margin: 2rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .about-hero {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+                        url('https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 8rem 5% 4rem;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .about-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-color);
+        }
+
+        .mission-section {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline {
+            padding: 4rem 5%;
+            background-color: white;
+        }
+
+        .timeline-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline-item {
+            padding: 2rem;
+            margin: 2rem 0;
+            border-left: 3px solid var(--primary-color);
+            position: relative;
+            background: var(--background-color);
+            border-radius: 0 15px 15px 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        .values-section {
+            padding: 4rem 5%;
+            background: var(--background-color);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .value-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .value-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>EcoHealth Connect</h1>
+            </div>
+            <ul class="nav-links">
+              <li><a href="home.html">Home</a></li>
+              <li><a href="service.html">Services</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="cons.html">Consultation</a></li>
+              
+            </ul>
+        </nav>
+    </header>
+
+    <section class="about-hero">
+      <h1>Our Story</h1>
+      <p>Pioneering sustainable healthcare solutions for a greener, healthier future</p>
+  </section>
+
+  <section class="mission-section">
+      <div class="features-grid">
+          <div class="feature-card">
+              <i class="fas fa-bullseye"></i>
+              <h3>Our Mission</h3>
+              <p>To revolutionize healthcare delivery through eco-friendly telemedicine solutions, making quality care accessible while reducing environmental impact.</p>
+          </div>
+          <div class="feature-card">
+              <i class="fas fa-eye"></i>
+              <h3>Our Vision</h3>
+              <p>A world where healthcare and environmental sustainability work hand in hand, creating a better future for all.</p>
+          </div>
+      </div>
+  </section>
+
+  <section class="timeline">
+      <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 3rem;">Our Journey</h2>
+      <div class="timeline-container">
+          <div class="timeline-item">
+              <h3>2020</h3>
+              <p>Founded with a vision to combine healthcare and environmental sustainability</p>
+          </div>
+          <div class="timeline-item">
+              <h3>2021</h3>
+              <p>Launched our first eco-friendly telemedicine platform</p>
+          </div>
+          <div class="timeline-item">
+              <h3>2022</h3>
+              <p>Expanded services to include comprehensive digital health solutions</p>
+          </div>
+          <div class="timeline-item">
+              <h3>2023</h3>
+              <p>Achieved carbon-neutral operations and launched global sustainability initiatives</p>
+          </div>
+      </div>
+  </section>
+
+  <section class="values-section">
+      <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 3rem;">Our Core Values</h2>
+      <div class="values-grid">
+          <div class="value-card">
+              <i class="fas fa-leaf"></i>
+              <h3>Environmental Stewardship</h3>
+              <p>Committed to reducing healthcare's environmental footprint</p>
+          </div>
+          <div class="value-card">
+              <i class="fas fa-heart"></i>
+              <h3>Patient-Centered Care</h3>
+              <p>Focusing on quality, accessibility, and patient satisfaction</p>
+          </div>
+          <div class="value-card">
+              <i class="fas fa-lightbulb"></i>
+              <h3>Innovation</h3>
+              <p>Continuously improving our sustainable healthcare solutions</p>
+          </div>
+          <div class="value-card">
+              <i class="fas fa-hands-helping"></i>
+              <h3>Community Impact</h3>
+              <p>Creating positive change in healthcare and environment</p>
+          </div>
+      </div>
+  </section>
+
+    <script>
+        // Reuse the necessary JavaScript from home.html
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>
